@@ -81,15 +81,14 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
 }
 
 void appendFile(fs::FS &fs, const char * path, const char * message){
-    Serial.printf("Appending to file: %s\n", path);
-
+    // Serial.printf("Appending to file: %s\n", path);
     File file = fs.open(path, FILE_APPEND);
     if(!file){
         Serial.println("Failed to open file for appending");
         return;
     }
     if(file.print(message)){
-        Serial.println("Message appended");
+        // Serial.println("Message appended");
     } else {
         Serial.println("Append failed");
     }
@@ -156,11 +155,18 @@ void testFileIO(fs::FS &fs, const char * path){
 }
 
 void setupMMC(){
-    if(!SD_MMC.begin()){
+    SPI.begin(14, 2, 15);
+    if(!SD.begin(13)){
         Serial.println("Card Mount Failed");
         return;
     }
-    uint8_t cardType = SD_MMC.cardType();
+    uint8_t cardType = SD.cardType();
+
+    // if(!SD_MMC.begin()){
+    //     Serial.println("Card Mount Failed");
+    //     return;
+    // }
+    // uint8_t cardType = SD_MMC.cardType();
 
     if(cardType == CARD_NONE){
         Serial.println("No SD_MMC card attached");
@@ -178,8 +184,8 @@ void setupMMC(){
         Serial.println("UNKNOWN");
     }
 
-    uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
-    Serial.printf("SD_MMC Card Size: %lluMB\n", cardSize);
+    // uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
+    // Serial.printf("SD_MMC Card Size: %lluMB\n", cardSize);
 
     // listDir(SD_MMC, "/", 0);
     // createDir(SD_MMC, "/mydir");
@@ -193,6 +199,6 @@ void setupMMC(){
     // renameFile(SD_MMC, "/hello.txt", "/foo.txt");
     // readFile(SD_MMC, "/foo.txt");
     // testFileIO(SD_MMC, "/test.txt");
-    Serial.printf("Total space: %lluMB\n", SD_MMC.totalBytes() / (1024 * 1024));
-    Serial.printf("Used space: %lluMB\n", SD_MMC.usedBytes() / (1024 * 1024));
+    // Serial.printf("Total space: %lluMB\n", SD_MMC.totalBytes() / (1024 * 1024));
+    // Serial.printf("Used spa2ce: %lluMB\n", SD_MMC.usedBytes() / (1024 * 1024));
 }
